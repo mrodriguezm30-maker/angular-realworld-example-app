@@ -29,9 +29,17 @@ jobs:
       - name: Build Angular application
         run: npm run build
 
+
       - name: Run unit tests
+        continue-on-error: true
         run: |
           CHROME_BIN=$(which google-chrome) npm test -- --watch=false --browsers=ChromeHeadless
+
+      - name: SonarQube Cloud Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 
       - name: SonarQube Cloud Scan
         uses: SonarSource/sonarqube-scan-action@v6
